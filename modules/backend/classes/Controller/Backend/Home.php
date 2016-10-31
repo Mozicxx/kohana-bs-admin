@@ -5,6 +5,7 @@ defined('SYSPATH') or die('No direct script access.');
 class Controller_Backend_Home extends Controller_Backend {
 
     public function action_index() {
+        die('home');
         $this->template->content = new View("backend/home/index");
     }
 
