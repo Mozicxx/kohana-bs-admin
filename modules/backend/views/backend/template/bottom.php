@@ -1,6 +1,7 @@
 
 <!--Custom design-->
 <script>
+    //给子导航赋值
     $(function(){
         var controller = "<?php echo $controller;?>",action = "<?php echo $action;?>";
         var change = false;
@@ -24,23 +25,7 @@
 
 //修改密码弹窗
         $('#changepwd').click(function(){
-            var content = '<div class="box-body">' +
-                '<form id=cgpwdbox >' +
-                '<div class="row" style="width:440px;">' +
-                '<div class="col-md-8 col-md-offset-2 form-group">' +
-                '<label for="oldpwd">旧密码 :</label>' +
-                '<input type="password" class="input-sm form-control" id="oldpwd" name="oldpwd" placeholder="请输入原密码" >' +
-                '</div>' +
-                '</div>' +
-                '<div class="row" style="width:440px;">' +
-                '<div class="col-md-8 col-md-offset-2 form-group">' +
-                '<label for="newpwd">新密码 :</label>' +
-                '<input type="password" class="input-sm form-control" id="newpwd" name="newpwd" placeholder="请输入新密码" >' +
-                '</div>' +
-                '</div>' +
-                '<input type="reset" style="display:none;" />' +
-                '</form>' +
-                '</div>';
+            var content = '<?php echo Common::templateToStr('backend/home/changepwd') ?>';
             layer.open({
                 type: 1, //page层
                 area: ['460px', '260px'],
@@ -58,6 +43,7 @@
                         type: 'POST',
                         dataType: 'json',
                         success: function(text){
+                            console.log('hj');
                             if(text.ret === 0){
                                 layer.msg(text.msg,{
                                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -68,6 +54,9 @@
                                 dialog.error(text.msg === undefined ? '修改密码失败!' : text.msg);
                                 $("input[type=reset]").trigger("click");//触发reset按钮
                             }
+                        },
+                        error: function(){
+                            dialog.error('请求失败!');
                         }
                     });
                 }
