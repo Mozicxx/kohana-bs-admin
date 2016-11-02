@@ -44,11 +44,11 @@
             </div>
             <div class="row">
                 <div class="col-xs-8">
-<!--                    <div class="checkbox icheck">-->
-<!--                        <label>-->
-<!--                            <input type="checkbox"> Remember Me-->
-<!--                        </label>-->
-<!--                    </div>-->
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" name="remember"> 记住我
+                        </label>
+                    </div>
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
@@ -95,10 +95,10 @@
         });
         $('#submit').click(function(){
             var data = $('#form1').serializeArray();
-            var url = window.location.search;
+            var qryurl = window.location.search; //截取当前url中“?”后面的字符串
             $.ajax({
                 type: 'post',
-                url: '<?php echo URL::base(TRUE); ?>backend/auth/login'+url,
+                url: '<?php echo URL::base(TRUE); ?>backend/auth/login'+qryurl,
                 data: data,
                 success:function(text){
                     if(text.ret === 0){
@@ -112,7 +112,7 @@
                     }
                 },
                 dataType: "json"
-            })
+            });
         });
     });
 </script>

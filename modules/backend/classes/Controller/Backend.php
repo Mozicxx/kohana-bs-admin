@@ -4,24 +4,34 @@
  * Description of Backend
  *
  * @author jiwei
+ * @update mozic
  */
 class Controller_Backend extends Controller_Template {
 
     public $template = "backend/template/template";
-    public $manager = 0;
-    public $manager_name = "";
-    public $admin_info = [];
-    public $config;
-    public $roles = array();
-    protected $permission = array();
 
+    protected $manager_id;
+    protected $manager;
+    protected $roles;
+    protected $permission;
+    protected $config;
+
+    /**
+     * 重写了父类的方法,给模板绑定了变量
+     */
     public function before() {
         $this->auth();
-        View::bind_global('admin', $this->admin_info);//设置全局变量admin
-        View::bind_global('config', $this->config);//设置全局变量config
-        $controller = $this->request->controller();
-        $action = $this->request->action();
-        $this->template = View::factory($this->template)->set(['admin'=>$this->admin_info,'config'=>$this->config,'controller'=>$controller,'action'=>$action]);
+        $this->roles = Auth_Backend::instance()->get_role();
+        $this->manager = Auth_Backend::instance()->get_detail();
+        $this->config = Controller_Backend_Common::backend_menu();
+        //绑定全局变量admininfo
+        View::bind_global('admin', $this->manager);
+        $this->template = View::factory($this->template)->set(
+            [
+                'config' => $this->config,
+                'controller' => $this->request->controller(),
+                'action' => $this->request->action()
+            ]);
     }
 
     public function after() {
@@ -32,22 +42,20 @@ class Controller_Backend extends Controller_Template {
         return in_array(1, $this->roles) || in_array(7, $this->roles);
     }
 
+    /**
+     * 检测用户信息和访问权限
+     */
     private function auth() {
+        $this->permission = Auth_Backend::instance()->get_permission();
         $u = Auth_Backend::instance()->get_user();
         if ($u) {
-            $this->manager = $u["user_id"];
-            $this->manager_name = $u["username"];
-            $this->roles = Auth_Backend::instance()->get_role();
-            $this->permission = Auth_Backend::instance()->get_permission();
-            $this->admin_info = Auth_Backend::instance()->get_admin_info();
-            $this->config = Kohana::$config->load("backend")->as_array();
+            $this->manager_id = $u["user_id"];
             $uri = strtolower($this->request->directory() . "/" . $this->request->controller() . "/" . $this->request->action());
             if (!in_array($uri, $this->permission)) {
-                echo $uri;
-                die("access denied, you don't have permission!");
+                exit("[ {$uri} ] access denied, you don't have permission!");
             }
         } else {
-            $this->redirect(URL::site("backend/auth/login", TRUE) . "?ref=" . $this->request->url(TRUE));
+            $this->redirect(URL::site("backend/auth/login", TRUE));
         }
     }
 

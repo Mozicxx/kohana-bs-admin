@@ -15,22 +15,21 @@ class Controller_Backend_Auth extends Controller_Template {
 
     public $template = "backend/template/template";
 
+    public $default_module = 'backend';//登录成功跳转的模块
+
     public function action_login() {
         if ($_POST) {
-            $username = $this->request->post("username");
-            $password = $this->request->post("password");
-            $ref = $this->request->query("ref");
-            if (!$ref) {
-                $ref = URL::site("backend", TRUE);
-            }
-            if (Auth_Backend::instance()->login($username, $password)) {
+            $ref = URL::site($this->default_module, TRUE);
+            $username = $this->request->post('username');
+            $password = $this->request->post('password');
+            $remember = $this->request->post('remember');
+            if (Auth_Backend::instance()->login($username, $password, $remember)) {
                 $ret = array("ret" => 0, "msg" => "登录成功", "url" => $ref);
             } else {
                 $ret = array("ret" => 1, "msg" => "登陆失败，用户名或密码错误!");
             }
             if ($this->request->is_ajax()) {
-                echo json_encode($ret);
-                die;
+                return json_encode($ret);
             } else {
                 $this->redirect($ref);
             }

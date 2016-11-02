@@ -18,21 +18,6 @@ return array
             "uri" => "backend/config/manager",
             "display" => true,),
     ),
-	"资源管理" => array(
-        "id" => "resources",
-        array(
-            "name" => "APK管理",
-            "id" => "resourcesapp",
-            "description" => "APK管理",
-            "uri" => "backend/resources/app",
-            "display" => true,),
-        array(
-            "name" => "APP管理",
-            "id" => "resourcesapp",
-            "description" => "APP管理", 
-            "uri" => "backend/resources/app",
-            "display" => true,),
-    ),
     "个人中心" => array(
         "id" => "home",
         array(

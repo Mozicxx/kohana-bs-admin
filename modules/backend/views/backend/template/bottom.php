@@ -1,8 +1,9 @@
 
 <!--Custom design-->
 <script>
-    //给子导航赋值
     $(function(){
+
+        //给子导航赋值
         var controller = "<?php echo $controller;?>",action = "<?php echo $action;?>";
         var change = false;
         $('li[sid]').each(function(){
@@ -15,13 +16,13 @@
                 $('#controller').text(pname);
                 $('#action').text(sname);
                 change = true;
-                return false;
-            }
-            if(change === false){
-                $('#controller').hide();
-                $('#action').hide();
+                return false;//跳出循环
             }
         });
+        if(change === false){
+            $('#controller').hide();
+            $('#action').hide();
+        }
 
 //修改密码弹窗
         $('#changepwd').click(function(){
@@ -38,7 +39,7 @@
                 yes: function(){
                     var data = $('#cgpwdbox').serializeArray();
                     $.ajax({
-                        url: '/backend/home/retpwd?method=save',
+                        url: '/backend/home/chgpwd?method=save',
                         data: data,
                         type: 'POST',
                         dataType: 'json',
@@ -62,6 +63,7 @@
                 }
             });
         });
+
     })
 </script>
 </body>

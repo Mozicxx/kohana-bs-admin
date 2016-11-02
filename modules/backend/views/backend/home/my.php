@@ -1,20 +1,3 @@
-<!-- Select2 -->
-<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/select2/select2.full.min.js"></script>
-<!-- InputMask -->
-<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/input-mask/jquery.inputmask.js"></script>
-<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js"></script>
-<!-- date-range-picker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap datepicker -->
-<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/datepicker/bootstrap-datepicker.js"></script>
-<!-- bootstrap color picker -->
-<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
-<!-- bootstrap time picker -->
-<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
-<!-- iCheck 1.0.1 -->
-<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/iCheck/icheck.min.js"></script>
 <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -90,6 +73,23 @@
     </div>
 </div>
 <!-- /.row -->
+<!-- Select2 -->
+<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/select2/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- date-range-picker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="<?php echo URL::base(TRUE); ?>static/AdminLTE/plugins/iCheck/icheck.min.js"></script>
 <script>
     $(function(){
         $('#gender').prop("value","<?php echo $admin['gender'];?>");

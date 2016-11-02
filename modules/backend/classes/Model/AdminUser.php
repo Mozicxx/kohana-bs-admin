@@ -13,28 +13,28 @@
  */
 class Model_AdminUser extends ORM {
 
-    protected $_table_name = "market_admin_user";
+    protected $_table_name = "admin_user";
     protected $_primary_key = "user_id";
-    protected $_db_group = "core";
+    protected $_db_group = "default";
 
     public function get_roles() {
-        $roles = DB::select("role_id")->from("market_admin_user_role")->where("user_id", "=", $this->user_id)->execute("core")->as_array("role_id");
+        $roles = DB::select("role_id")->from("admin_user_role")->where("user_id", "=", $this->user_id)->execute()->as_array("role_id");
         return array_keys($roles);
     }
 
     public function set_roles($roles) {
-        DB::delete("market_admin_user_role")->where("user_id", "=", $this->user_id)->execute("core");
+        DB::delete("admin_user_role")->where("user_id", "=", $this->user_id)->execute("core");
         if (is_array($roles) && $roles) {
-            $query = DB::insert("market_admin_user_role")->columns(array("user_id", "role_id"));
+            $query = DB::insert("admin_user_role")->columns(array("user_id", "role_id"));
             foreach ($roles as $role) {
                 $query->values(array($this->user_id, $role));
             }
-            $query->execute("core");
+            $query->execute();
         }
     }
 
     public function get_name($username) {
-        $realname = DB::select("realname")->from("market_admin_user")->where("username", "=", $username)->limit(1)->execute("core")->current();
+        $realname = DB::select("realname")->from("admin_user")->where("username", "=", $username)->limit(1)->execute()->current();
         return $realname["realname"];
     }
 

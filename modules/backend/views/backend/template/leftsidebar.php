@@ -1,24 +1,4 @@
 
-<?php
-$arr = array();
-$son = [];
-foreach ($config as $k => $g) {
-    $flag = 0;
-    foreach ($g as $i => $m) {
-//        $permission = in_array($m["uri"], $this->permission);
-        $permission = true;
-        if (is_array($m) && $permission && $m["display"]) {
-            $son[] = array("id" => $m["id"], "pid" => $g["id"], "text" => $m["name"], "iconCls" => $m["id"], "url" => URL::site($m["uri"], TRUE));
-            $flag++;
-        }
-    }
-    if ($flag) {
-        $arr[] = ["id" => $g["id"], "text" => $k, "iconCls" => $g["id"], "son" => $son];
-    }
-    $son = [];
-}
-
-?>
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
@@ -36,7 +16,7 @@ foreach ($config as $k => $g) {
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <!--                <li class="header">MAIN NAVIGATION</li>-->
-<?php foreach ($arr as $item) : ?>
+<?php foreach ($config as $item) : ?>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-tasks"></i> <span><?php echo $item['text'];?></span>

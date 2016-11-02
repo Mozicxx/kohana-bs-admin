@@ -54,7 +54,7 @@
                             <!-- Menu Footer菜单页脚-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="<?php echo URL::base(TRUE); ?>backend/home/retpwd" class="btn btn-default btn-flat">修改密码</a>
+                                    <a href="<?php echo URL::base(TRUE); ?>backend/home/chgpwd" class="btn btn-default btn-flat">修改密码</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="<?php echo URL::base(TRUE); ?>backend/auth/logout" class="btn btn-default btn-flat">登 出</a>

@@ -21,14 +21,19 @@ class Controller_Backend_Config extends Controller_Backend {
             $res = null;
             if ($method == "list") {
                 $roles = $role->find_all();
+//                $roles == DB::select('role_name','role_desc')->
                 $data = array();
                 foreach ($roles as $r) {
                     $data[] = $r->as_array();
+//                    $data[] = [$r->role_name,$r->role_desc];
                 }
                 $res = array(
-                    "total" => $role->count_all(),
+                    "draw" => $this->request->post('draw'),
+                    "recordsTotal" => $role->count_all(),
+                    "recordsFiltered" => $role->count_all(),
                     "data" => $data
                 );
+
             } elseif ($method == "get") {
                 $r = $role->where("role_id", "=", $id = $this->request->query("id"))->find();
                 $permission = Kohana::$config->load("backend")->as_array();
@@ -48,6 +53,7 @@ class Controller_Backend_Config extends Controller_Backend {
                 }
                 $res = $r->as_array();
                 $res["promission"] = $data;
+
             } elseif ($method == "save") {
                 $data = json_decode($this->request->post("data"));
                 foreach ($data as $r) {
@@ -66,6 +72,7 @@ class Controller_Backend_Config extends Controller_Backend {
                     }
                     $role->set_permission($permission);
                 }
+
             } elseif ($method == "delete") {
                 $id = $this->request->query("id");
                 if ($id) {
@@ -75,8 +82,7 @@ class Controller_Backend_Config extends Controller_Backend {
                     }
                 }
             }
-            echo json_encode($res);
-            die;
+            exit( json_encode($res) );
         } else {
             if ($this->request->param("id")) {
                 $this->template->content = new View("backend/config/roleedit");
@@ -85,6 +91,7 @@ class Controller_Backend_Config extends Controller_Backend {
             }
         }
     }
+
 
     public function action_manager() {
         $adminuser = ORM::factory("AdminUser");

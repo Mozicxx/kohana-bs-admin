@@ -6,5 +6,4 @@ return array(
 	'lifetime'     => 12096000,//1209600
 	'session_type' => Session::$default,
 	'session_key'  => 'backend_auth_user',
-
 );
