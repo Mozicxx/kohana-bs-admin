@@ -33,7 +33,6 @@ class Controller_Backend_Config extends Controller_Backend {
                     "recordsFiltered" => $role->count_all(),
                     "data" => $data
                 );
-
             } elseif ($method == "get") {
                 $r = $role->where("role_id", "=", $id = $this->request->query("id"))->find();
                 $permission = Kohana::$config->load("backend")->as_array();
@@ -55,7 +54,7 @@ class Controller_Backend_Config extends Controller_Backend {
                 $res["promission"] = $data;
 
             } elseif ($method == "save") {
-                $data = json_decode($this->request->post("data"));
+                $data = $this->request->post();
                 foreach ($data as $r) {
                     $p = $r->promission;
                     unset($r->promission);

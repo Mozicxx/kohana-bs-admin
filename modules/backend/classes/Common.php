@@ -8,8 +8,8 @@
  */
 class Common
 {
-    static function templateToStr ($templatePath) {
-        $html = View::factory($templatePath)->render();
+    static function templateToStr ($templatePath,$data='') {
+        $html = View::factory($templatePath,['data'=>$data])->render();
         $html = str_replace("\n", "", $html);
         $html = str_replace("\r", "", $html);
         return $html;

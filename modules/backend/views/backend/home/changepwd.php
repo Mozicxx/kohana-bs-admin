@@ -1,5 +1,5 @@
 <div class="box-body">
-    <form id=cgpwdbox >
+    <form id="cgpwdbox" >
         <div class="row" style="width:440px;">
             <div class="col-md-8 col-md-offset-2 form-group">
                 <label for="oldpwd">旧密码 :</label>

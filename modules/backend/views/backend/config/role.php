@@ -24,70 +24,25 @@
     </div>
 </div>
 <!-- /.row -->
-<!-- Modal -->
-<div id="myModal" class="modal fade" data-backdrop="false">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-                aria-hidden="true">×
-        </button>
-        <h3 id="myModalLabel">用户信息</h3>
-    </div>
-    <div class="modal-body">
-        <form class="form-horizontal" id="resForm">
-            <input type="hidden" id="objectId"/>
-
-            <div class="control-group">
-                <label class="control-label" for="inputName">昵称：</label> <input
-                    type="text" id="rolename" name="name"/>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputNote">备注：</label>
-                <textarea name="note" id="reoledesc" cols="30" rows="4"></textarea>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" id="btnSave">确定</button>
-        <button class="btn btn-danger" data-dismiss="modal"
-                aria-hidden="true">取消
-        </button>
-    </div>
-</div>
 <script>
     //初始化表格
     var url = "/backend/config/role?method=list";
-    var Scope = {
-        url: url,
-        datatableConfig: {
-            "processing": true,
-            "serverSide": true,
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": false,
-            "info": true,
-            "processing": true,
-            "autoWidth": false,
-            "deferRender":false,
-            "ajax": url,
-        }
-    };
-
-
     var oTable;
     $(document).ready(function () {
 
 
-//        initModal();
         oTable = initTable();
 //        $("#btnEdit").hide();
 //        $("#btnSave").click(_addFun);
 //        $("#btnEdit").click(_editFunAjax);
+        //全选功能
         $(document).on("click","#checkAll",function () {
             if ($(this).prop("checked")) {
                 $("input[name='checkList']").prop("checked", true);
+                $("input[name='checkList']").parent().parent().addClass('row_selected');
             } else {
                 $("input[name='checkList']").prop("checked", false);
+                $("input[name='checkList']").parent().parent().removeClass('row_selected');
             }
         });
     });
@@ -149,22 +104,23 @@
     //                    }
     //                },
             ],
-                "sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row'<'col-sm-5'i><'col-sm-7 'p>>",
-                "fnCreatedRow": function (nRow, aData, iDataIndex) {
-                //add selected class
-                $(nRow).click(function () {
-                    if ($(this).hasClass('row_selected')) {
-                        $(this).removeClass('row_selected');
-                    } else {
-                        oTable.$('tr.row_selected').removeClass('row_selected');
-                        $(this).addClass('row_selected');
-                    }
-                });
+            "sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row'<'col-sm-5'i><'col-sm-7 'p>>",
+            "fnCreatedRow": function (nRow, aData, iDataIndex) {
+            //add selected class
+            $(nRow).click(function () {
+//                console.log($(this).children().find('input')[0].checked);
+                var check = $(this).children().find('input')[0].checked;
+                if (check) {
+                    $(this).addClass('row_selected');
+                } else {
+                    $(this).removeClass('row_selected');
+                }
+            });
             },
             "fnInitComplete": function (oSettings, json) {
                 $('<div class="btn-group" >' +
                     '<a href="#myModal" id="addFun" class="btn btn-primary" data-toggle="modal">添加</a>' +
-                    '<a href="#" class="btn btn-primary" id="editFun">修改</a>' +
+                    '<a href="#" class="btn btn-primary" id="editFun">编辑</a>' +
                     '</div> ' + '&nbsp;' +
                     '<a href="#" class="btn btn-danger" id="deleteFun">删除</a>' + '&nbsp;'
                 ).appendTo($('.myBtnBox'));
@@ -203,14 +159,21 @@
      * @private
      */
     function _value() {
-        if (oTable.$('tr.row_selected').get(0)) {
-            $("#btnEdit").show();
+        if ($('tr.row_selected').length == 1) {
             var selected = oTable.fnGetData(oTable.$('tr.row_selected').get(0));
-            $("#rolename").val(selected.rele_name);
-            $("#roledesc").val(selected.role_desc);
+            $.ajax(
+                url:'/config/role',
+                type:'post',
+                data:data,
+                dataType:'json',
+                success:function(){
 
-            $("#myModal").modal("show");
-            console.log('cc');
+            },
+            );
+            initChildFrame();
+            $("#roleid").val(selected.role_id);
+            $("#rolename").val(selected.role_name);
+            $("#roledesc").val(selected.role_desc);
         } else {
             dialog.error('请选择选择一条记录后操作');
         }
@@ -328,19 +291,51 @@
 //            }
 //        });
 //    }
-//    /**
-//     * 初始化弹出层
-//     */
-//    function initModal() {
-//        $('#myModal').on('show', function () {
-//            $('body', document).addClass('modal-open');
-//            $('<div class="modal-backdrop fade in"></div>').appendTo($('body', document));
-//        });
-//        $('#myModal').on('hide', function () {
-//            $('body', document).removeClass('modal-open');
-//            $('div.modal-backdrop').remove();
-//        });
-//    }
+    /**
+     * 初始化弹出层
+     */
+    function initChildFrame(content) {
+        layer.open({
+            type: 1, //page层
+            area: ['1000px', '500px'],
+            title: '编辑角色',
+            shade: 0.6, //遮罩透明度
+            moveType: 1, //拖拽风格，0是默认，1是传统拖动
+            shift: 0, //0-6的动画形式，-1不开启
+            content: content,
+            btn: ['确认', '取消'],
+            yes: function(){
+                var data = $('#roleedit').serializeArray();
+                $.ajax({
+                    url: '/backend/config/role?method=save',
+                    data: data,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(text){
+                        console.log('hj');
+                        if(text.ret === 0){
+                            layer.msg(text.msg,{
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            },function(){
+                                layer.closeAll();
+                            });
+                        }else{
+                            layer.alert(
+                                text.msg === undefined ? '修改失败!' : text.msg,
+                                {icon:2},
+                                function(){
+                                    layer.closeAll();
+                                }
+                            );
+                        }
+                    },
+                    error: function(){
+                        dialog.error('请求失败!');
+                    }
+                });
+            }
+        });
+    }
 //
 //    /**
 //     * 重置表单
